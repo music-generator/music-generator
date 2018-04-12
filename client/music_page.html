@@ -7,18 +7,31 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="style/index.css" type="text/css" rel="stylesheet">
+    <link href="style/music_page.css" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <!-- script -->
-    
 </head>
 <body>
-    <!-- navbar header -->
     <div id="app">
         <header-navbar @login="login" @logout="logout" @register="register" :islogin="isLogin"></header-navbar>
         <advertisement></advertisement>
+
+        <div class= "container-song-info">
+            <song-info></song-info>
+        </div>    
+        <div class= "container-song-comment">
+            <submit-comment @submit-comment="submit_comment"></submit-comment>
+        </div>
+        <div class = "container-user-info">
+            <user-info></user-info>
+        </div>
+        <div class= "container-comment-list">
+            <comment-list v-for="user in 5"></comment-list>
+        </div>
+
     </div>
 
-    <!-- script -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -30,9 +43,12 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="vue/header-navbar.js"></script>
     <script src="vue/advertisement.js"></script>
+    <script src="vue/song-info.js"></script>
+    <script src="vue/submit-comment.js"></script>
+    <script src="vue/user-info.js"></script>
+    <script src="vue/comment-list.js"></script>
     <script>
-
-        new Vue ({
+         new Vue ({
             el: '#app',
             data: {
                 rama: 'ini ada datanya',
@@ -55,8 +71,11 @@
                     let newEmail = payload.email;
                     let newPassword = payload.password;
                     let newName = payload.name
-                    axios.post('http://localhost:3000/users/signup',{email: newEmail, password: newPassword, name: newName},{})
                     window.location.href="index.html"
+                },
+                submit_comment: function(payload){
+                    let userComment = payload.comment
+                    console.log(userComment,'ini comment tinggal disubmit')
                 }
             }
         }) 
