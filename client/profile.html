@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="style/index.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- script -->
+    
+</head>
+<body>
+    <!-- navbar header -->
+    <div id="app">
+        <header-navbar @login="login" @logout="logout" @register="register" :islogin="isLogin"></header-navbar>
+        <advertisement></advertisement>
+        <div class="container-user">
+            <user-profile></user-profile>
+            <edit-upload></edit-upload>
+        </div>
+    </div>
+
+    <!-- script -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="vue/header-navbar.js"></script>
+    <script src="vue/advertisement.js"></script>
+    <script src="vue/user-profile.js"></script>
+    <script src="vue/edit-profile-upload-song.js"></script>
+    <script>
+
+        new Vue ({
+            el: '#app',
+            data: {
+                rama: 'ini ada datanya',
+                new_email: '',
+                new_password: '',
+                isLogin: false,
+            },
+            methods: {
+                login: function(){
+                    this.isLogin = true;
+                    // localStorage.setItem('token', ini tokennya)
+                    window.location.href="index.html"
+                },
+                logout: function(){
+                    this.isLogin = false;
+                    // localStorage.removeItem('token')
+                    window.location.href="index.html"
+                },
+                register: function(payload){
+                    let newEmail = payload.email;
+                    let newPassword = payload.password;
+                    let newName = payload.name
+                    axios.post('http://localhost:3000/users/signup',{email: newEmail, password: newPassword, name: newName},{})
+                    window.location.href="index.html"
+                }
+            }
+        }) 
+    </script>
+</body>
+</html>
