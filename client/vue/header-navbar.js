@@ -2,7 +2,7 @@ Vue.component('header-navbar', {
     name: 'header-navbar',
     template: `
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-   
+
         <a class="navbar-brand" href="#">Navbar</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -81,7 +81,7 @@ Vue.component('header-navbar', {
             </div>
         </div>
 
-       
+
         <!-- Modal Login-->
         <div class="modal fade" id="user-login" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -95,10 +95,10 @@ Vue.component('header-navbar', {
                 <div class="modal-body">
                     <form class="form">
                         <div class="form-group">
-                            <input name="username" placeholder="Username" class="form-control form-control-sm" type="text" required="">
+                            <input name="email" id="emailLogin" placeholder="Email" class="form-control form-control-sm" type="text" required="">
                         </div>
                         <div class="form-group">
-                            <input name="password" placeholder="Password" class="form-control form-control-sm" type="text" required="">
+                            <input name="password" id="passwordLogin" placeholder="Password" class="form-control form-control-sm" type="password" required="">
                         </div>
                     </form>
                 </div>
@@ -126,7 +126,13 @@ Vue.component('header-navbar', {
     },
     methods: {
         login: function(){
-            this.$emit('login', true)
+            let email = $('#emailLogin').val()
+            let password = $('#passwordLogin').val()
+            let payload = {
+              email,
+              password
+            }
+            this.$emit('login', payload)
         },
         logout: function(){
             this.$emit('logout', false)
