@@ -6,7 +6,6 @@ const {loginAuth} = require('../middleware/auth')
 
 /* GET users listing. */
 //tes auth udah login apa belum
-
 router.get('/', loginAuth, findUser)
       .post('/signin', signIn)
       .post('/signup', signUp)

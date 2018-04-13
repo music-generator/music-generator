@@ -4,14 +4,11 @@ const pwdtoken = process.env.pwdtoken
 
 module.exports = {
   loginAuth: function(req, res, next){
-
-    //cek token
     if(req.headers.token){
       let token = req.headers.token
       jwt.verify(token, pwdtoken, function(err, decoded) {
         console.log('Error : ',err);
         console.log('Decoded :', decoded)
-        req.decoded = decoded
         if(err){
           res.status(500).json({
             message: 'Something went wrong / token is invalid'
@@ -39,6 +36,7 @@ function cekEmail(req, res, next, decoded){
              message: "Anda harus Login"
            })
          }else{
+           req.users = users
            next()
          }
        })
