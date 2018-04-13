@@ -72,7 +72,7 @@
                     let email = payload.email
                     let password = payload.password
                     //nanti urlLogin di ganti
-                    let urlLogin = 'http://localhost:3000/users/signin'
+                    let urlLogin = 'http://server-mg.creart.xyz/users/signin'
 
                     axios.post(urlLogin, {email, password})
                          .then(function(response){
@@ -100,7 +100,7 @@
                     let newEmail = payload.email
                     let newPassword = payload.password
                     let newName = payload.name
-                    let registerUrl = 'http://localhost:3000/users/signup'
+                    let registerUrl = 'http://server-mg.creart.xyz/users/signup'
 
                     axios.post(registerUrl,{
                       email: newEmail,
@@ -148,10 +148,9 @@
         }
         let getId = getParameterByName('music_id');
         vue.id_url = getId
-        axios.get(`http://localhost:3000/musics/${getId}`)
+        axios.get(`http://server-mg.creart.xyz/musics/${getId}`,{headers: {token:token}})
                          .then(response=>{
                              console.log(response.data,'--------')
-                             
                              let pict = response.data.data.picture
                              let music = response.data.data.music
                              let title = response.data.data.name
@@ -162,7 +161,8 @@
                              console.log(vue.data_music)
                          })
                          .catch(err=>{
-                             console.log('errorrr')
+                             alert('login dulu')
+                             window.location.href="index.html"
         })
         
     </script>

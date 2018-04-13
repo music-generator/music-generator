@@ -93,7 +93,7 @@ Vue.component('music-player-1', {
   props: ['datamusic'],
   methods: {
     showAllMusicList: function () {
-        axios.get('http://localhost:3000/musics',{
+        axios.get('http://server-mg.creart.xyz/musics',{
             headers: {
                 token: localStorage.getItem('token')
             }

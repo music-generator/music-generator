@@ -141,7 +141,7 @@ Vue.component('edit-upload', {
             formData.append('music', this.music)
             formData.append('picture', this.picture)
             console.log('click upload==', formData)
-            axios.post('http://localhost:3000/musics/upload', formData, {
+            axios.post('http://server-mg.creart.xyz/musics/upload', formData, {
                 headers: {
                     'Content-type': 'multipart/form-data',
                     token: localStorage.getItem('token')
@@ -163,7 +163,7 @@ Vue.component('edit-upload', {
             this.picture = event.target.files[0]
         },
         showAllMusicList: function () {
-            axios.get('http://localhost:3000/musics',{
+            axios.get('http://server-mg.creart.xyz/musics',{
                 headers: {
                     token: localStorage.getItem('token')
                 }

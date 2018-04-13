@@ -89,7 +89,6 @@ module.exports = {
 
   findUser: function(req, res){
     let token = req.headers.token
-
     jwt.verify(token, pwdtoken, function(err, decoded) {
       if(err){
         res.status(500).json({
@@ -103,6 +102,7 @@ module.exports = {
                    message: "Anda harus Login"
                  })
                }else {
+                 console.log('sampai sini masuk',users)
                  res.status(200).json({
                    message: "User Ketemu",
                    data: users

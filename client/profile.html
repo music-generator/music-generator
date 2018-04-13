@@ -21,7 +21,7 @@
         <header-navbar @login="login" @logout="logout" @register="register" :islogin="isLogin"></header-navbar>
         <music-player-1></music-player-1>
         <div class="container-user">
-            <user-profile @editprofile="edit_profile" @uploadfile="upload_file"></user-profile>
+            <user-profile @editprofile="edit_profile" @uploadfile="upload_file" :userdata="userData"></user-profile>
             <edit-upload :isedit="isEdit"></edit-upload>
         </div>
 
@@ -60,13 +60,14 @@
                 isLogin: false,
                 isEdit: true,
                 userLogin: {},
+                userData: [],
             },
             methods: {
                 login: function(payload){
                     let email = payload.email
                     let password = payload.password
                     //nanti urlLogin di ganti
-                    let urlLogin = 'http://localhost:3000/users/signin'
+                    let urlLogin = 'http://server-mg.creart.xyz/users/signin'
 
                     axios.post(urlLogin, {email, password})
                          .then(function(response){
@@ -94,7 +95,7 @@
                     let newEmail = payload.email
                     let newPassword = payload.password
                     let newName = payload.name
-                    let registerUrl = 'http://localhost:3000/users/signup'
+                    let registerUrl = 'http://server-mg.creart.xyz/users/signup'
 
                     axios.post(registerUrl,{
                       email: newEmail,
@@ -119,9 +120,14 @@
             }
         }) 
         //cek token
-        console.log('halaman profile', token)
         if(token){
           vue.isLogin = true
+          axios.get('http://server-mg.creart.xyz/users/',{headers: {token:token}})
+               .then((response)=>{
+                   vue.userLogin.name = response.data.data.name;
+                   vue.userLogin.email = response.data.data.email;
+                   vue.userData.push(vue.userLogin)
+               })
         }else {
           vue.isLogin = false
         }
