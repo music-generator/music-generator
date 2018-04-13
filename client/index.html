@@ -20,7 +20,7 @@
     <div id="app">
         <header-navbar @login="login" @logout="logout" @register="register" :islogin="isLogin"></header-navbar>
         <advertisement></advertisement>
-<!-- 
+<!--
 
         <div class="container">
             <form>
@@ -47,7 +47,7 @@
                     <audio controls>
                         <source :src="data.music" type="audio/mpeg">
                         Your browser does not support the audio element.
-                    </audio>    
+                    </audio>
                 </div>
             </div>
             <!-- <p>{{data.title}}</p>
@@ -66,7 +66,7 @@
     </div>
 
     <!-- script -->
-    
+
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -115,7 +115,7 @@
                             title: 'Oops...',
                             text: 'something wrong!',
                             })
-                             
+
                            }else{
                             //  alert(response.data.message)
                              localStorage.setItem('token', response.data.token)
@@ -241,7 +241,7 @@
                     let getId = data._id;
                     window.location.href=`music_page.html?music_id=${getId}`
 
-                    
+
                 }
             },
             created: function () {
