@@ -39,19 +39,29 @@
                 <button type="button" @click="uploadFile">Submit</button>
               </form>
         </div> -->
-        <div v-for="data in showAll">
-            <p>{{data.title}}</p>
+        <div class="container border border-dark" v-for="data in showAll" style="padding: 10px;">
+            <div class="media">
+                <img class="mr-3" style="height: 150px; width: 150px;" :src="data.picture" @click="getSongId(data)" alt="Generic placeholder image">
+                <div class="media-body">
+                    <h5 class="mt-0">{{data.name}}</h5>
+                    <audio controls>
+                        <source :src="data.music" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>    
+                </div>
+            </div>
+            <!-- <p>{{data.title}}</p>
             <img :src="data.picture" alt="picture" @click="getSongId(data)">
             <audio controls>
                 <source :src="data.music" type="audio/mpeg">
                 Your browser does not support the audio element.
-            </audio>
-            <a :href=`http://www.facebook.com/sharer.php?u=${data.music}` target="_blank">
+            </audio> -->
+            <!-- <a :href=`http://www.facebook.com/sharer.php?u=${data.music}` target="_blank">
                 <img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook" />
             </a>
             <a href="https://twitter.com/share?url=https://storage.googleapis.com/music-generator/1523537506592.mp3&amp;text=Simple%20sharemusicgcs&amp;hashtags=hacktiv8" target="_blank">
                 <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
-            </a>   
+            </a>    -->
         </div>
     </div>
 
@@ -221,7 +231,7 @@
                         }
                     }).then(response =>{
                         console.log('show music axios==',response.data)
-                        this.showAll = response.data.data
+                        this.showAll = response.data.data.slice().reverse()
                     }).catch(error =>{
                         console.log(error)
                     })
