@@ -21,7 +21,6 @@
         <header-navbar @login="login" @logout="logout" @register="register" :islogin="isLogin"></header-navbar>
         <advertisement></advertisement>
 
-        <music-player-1></music-player-1>
         <div class="container">
             <form>
                 <div class="form-group">
@@ -69,7 +68,6 @@
     <script src="vue/header-navbar.js"></script>
     <script src="vue/music-player-1.js"></script>
     <script src="vue/advertisement.js"></script>
-    <script src="script/music-player-1.js"></script>
     <script>
         let token = localStorage.getItem('token')
 
@@ -153,7 +151,6 @@
                 handleUploadMusic: function (event) {
                     console.log('event===', event.target.files)
                     this.music = event.target.files[0]
-                    this.picture = event.target.files[0]
                 },
                 handleUploadPicture: function (event) {
                     console.log('event===', event.target.files)
@@ -166,7 +163,7 @@
                         }
                     }).then(response =>{
                         console.log('show music axios==',response.data)
-                        this.showAll = response.data.dataMusic
+                        this.showAll = response.data.data
                     }).catch(error =>{
                         console.log(error)
                     })
