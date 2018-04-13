@@ -23,6 +23,7 @@ module.exports = {
     },
 
     getOne: function (req, res) {
+        console.log('masuk kesini')
         Music.findById(req.params.id).exec().then(response => {
             res.status(200).json({
                 message: 'success get data by id',

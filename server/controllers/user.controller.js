@@ -85,6 +85,13 @@ module.exports = {
          })
     // console.log('Email Login',email);
     // console.log('Password Login', password);
+  },
+  getOne: function(req,res){
+    console.log(req.decoded,'ini data token')
+    console.log('tesss')
+    res.status(200).json({
+      message: 'masuk'
+    })
   }
 }
 

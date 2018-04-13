@@ -10,6 +10,7 @@
     <link href="style/music_page.css" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href='https://fonts.googleapis.com/css?family=Allerta' rel='stylesheet'>
+    <link rel="stylesheet" href="./style/music-player-1.css">
 
     <!-- script -->
 </head>
@@ -17,15 +18,10 @@
     <div id="app">
         <header-navbar @login="login" @logout="logout" @register="register" :islogin="isLogin"></header-navbar>
 
-        <div class="container-music">
-            <div class="container-audio">
-                <music-player></music-player>
-             </div>
-             <bgm-music></bgm-music>
-        </div>
+        <music-player-1 :datamusic="data_id"></music-player-1>
         
         <div class= "container-song-info">
-            <song-info  @facebookshare="facebook_share" @twittershare="twitter_share" @likesong="likesong"></song-info>
+            <song-info  @facebookshare="facebook_share" @twittershare="twitter_share" @likesong="likesong" :idmusic="id_url"></song-info>
         </div>    
         <div class= "container-song-comment">
             <submit-comment @submit-comment="submit_comment"></submit-comment>
@@ -51,7 +47,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="vue/header-navbar.js"></script>
-    <script src="vue/music-player.js"></script>
+    <script src="vue/music-player-1.js"></script>
     <script src="vue/bgm-music.js"></script>
     <script src="vue/song-info.js"></script>
     <script src="vue/submit-comment.js"></script>
@@ -67,6 +63,9 @@
                 new_email: '',
                 new_password: '',
                 isLogin: false,
+                data_music: {},
+                data_id: [],
+                id_url: '',
             },
             methods: {
                 login: function(payload){
@@ -138,6 +137,34 @@
           vue.isLogin = false
         }
 
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+        let getId = getParameterByName('music_id');
+        vue.id_url = getId
+        axios.get(`http://localhost:3000/musics/${getId}`)
+                         .then(response=>{
+                             console.log(response.data,'--------')
+                             
+                             let pict = response.data.data.picture
+                             let music = response.data.data.music
+                             let title = response.data.data.name
+                             vue.data_music.title = title;
+                             vue.data_music.picture = pict;
+                             vue.data_music.music = music
+                             vue.data_id.push(vue.data_music)
+                             console.log(vue.data_music)
+                         })
+                         .catch(err=>{
+                             console.log('errorrr')
+        })
+        
     </script>
 </body>
 </html>

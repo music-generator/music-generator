@@ -2,7 +2,7 @@ Vue.component('edit-upload', {
     name: 'edit-upload',
     template: `
     <div>
-        <div v-if="isedit">
+        <div v-if="!isedit">
             <div class="header-edit">
                 <h5 class="modal-title" id="exampleModalCenterTitleRegister">Edit Profile</h5>
             </div>
@@ -43,31 +43,21 @@ Vue.component('edit-upload', {
                     <form>
                         <label for="exampleInputTitle1">Name</label>
                         <div class="form-group">
-                            <input type="title" name="title" class="form-control" id="title" placeholder="Enter titile song">
-                            <small id="editEmailHelp" class="form-text text-muted"></small>
+                            <input type="text" class="form-control" v-model="name" placeholder="Enter title song">
                         </div>
-                        <label for="exampleInputTitle1">File Picture</label>
-
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Upload file picture" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button">Upload</button>
-                            </div>
+                        <div class="form-group">
+                            <label for="title">Music File</label>
+                            <input type="file" class="form-control" name="music" accept="audio/*" @change="handleUploadMusic">
                         </div>
-                        <label for="exampleInputTitle1">File Song</label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Upload file music" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button">Upload</button>
-                            </div>
+                        <div class="form-group">
+                            <label for="title">Picture/Poster</label>
+                            <input type="file" class="form-control" name="picture" accept="image/*" @change="handleUploadPicture">
                         </div>
-                
-                        
                     </form>
                 </div>
                 <div class="header-upload">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Submit</button>
+                    <button type="button" @click="uploadFile" class="btn btn-primary">Submit</button>
                 </div>
 
        </div>        
@@ -85,6 +75,10 @@ Vue.component('edit-upload', {
             isPassword: false,
             isConfirm: false,
             isName: false,
+            name: '',
+            music: '',
+            picture: '',
+            showAll: []
         }
     },
     props: ['isedit'],
@@ -139,5 +133,49 @@ Vue.component('edit-upload', {
                 this.isConfirm = false;
             }
         }
+    },
+    methods: {
+        uploadFile: function () {
+            let formData = new FormData()
+            formData.append('name', this.name)
+            formData.append('music', this.music)
+            formData.append('picture', this.picture)
+            console.log('click upload==', formData)
+            axios.post('http://localhost:3000/musics/upload', formData, {
+                headers: {
+                    'Content-type': 'multipart/form-data',
+                    token: localStorage.getItem('token')
+                }
+            }).then(response => {
+                console.log('response upload', response.data)
+                alert('upload berhasil!!')
+                location.reload()
+            }).catch(error =>{
+                alert('something wrong!!', error.message)
+            })
+        },
+        handleUploadMusic: function (event) {
+            console.log('event===', event.target.files)
+            this.music = event.target.files[0]
+        },
+        handleUploadPicture: function (event) {
+            console.log('event===', event.target.files)
+            this.picture = event.target.files[0]
+        },
+        showAllMusicList: function () {
+            axios.get('http://localhost:3000/musics',{
+                headers: {
+                    token: localStorage.getItem('token')
+                }
+            }).then(response =>{
+                console.log('show music axios==',response.data)
+                this.showAll = response.data.dataMusic
+            }).catch(error =>{
+                console.log(error)
+            })
+        }
+    },
+    created: function () {
+        this.showAllMusicList()
     }
 })

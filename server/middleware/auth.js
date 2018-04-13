@@ -11,6 +11,7 @@ module.exports = {
       jwt.verify(token, pwdtoken, function(err, decoded) {
         console.log('Error : ',err);
         console.log('Decoded :', decoded)
+        req.decoded = decoded
         if(err){
           res.status(500).json({
             message: 'Something went wrong / token is invalid'

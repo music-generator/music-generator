@@ -20,8 +20,7 @@
     <div id="app">
         <header-navbar @login="login" @logout="logout" @register="register" :islogin="isLogin"></header-navbar>
         <advertisement></advertisement>
-
-        <music-player-1></music-player-1>
+<!-- 
         <div class="container">
             <form>
                 <div class="form-group">
@@ -38,10 +37,10 @@
                 </div>
                 <button type="button" @click="uploadFile">Submit</button>
               </form>
-        </div>
+        </div> -->
         <div v-for="data in showAll">
             <p>{{data.title}}</p>
-            <img :src="data.picture" alt="picture">
+            <img :src="data.picture" alt="picture" @click="getSongId(data)">
             <audio controls>
                 <source :src="data.music" type="audio/mpeg">
                 Your browser does not support the audio element.
@@ -69,7 +68,6 @@
     <script src="vue/header-navbar.js"></script>
     <script src="vue/music-player-1.js"></script>
     <script src="vue/advertisement.js"></script>
-    <script src="script/music-player-1.js"></script>
     <script>
         let token = localStorage.getItem('token')
 
@@ -153,7 +151,6 @@
                 handleUploadMusic: function (event) {
                     console.log('event===', event.target.files)
                     this.music = event.target.files[0]
-                    this.picture = event.target.files[0]
                 },
                 handleUploadPicture: function (event) {
                     console.log('event===', event.target.files)
@@ -170,6 +167,13 @@
                     }).catch(error =>{
                         console.log(error)
                     })
+                },
+                getSongId: function(data){
+                    console.log(data._id,'---')
+                    let getId = data._id;
+                    window.location.href=`music_page.html?music_id=${getId}`
+
+                    
                 }
             },
             created: function () {
