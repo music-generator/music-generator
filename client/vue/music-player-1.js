@@ -8,7 +8,7 @@ Vue.component('music-player-1', {
                 <source src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/9473/new_year_dubstep_minimix.ogg" type="audio/ogg">
                 Your browser dose not Support the audio Tag
             </audio>
-            <div class="container-audio">
+            <div class="container-audio d-none d-md-block">
                 <div class="colum1">
                     <div class="row"></div>
                 </div>
@@ -81,5 +81,27 @@ Vue.component('music-player-1', {
             </div>
         </div>
     </div>
-  `
+  `,
+  data () {
+      return {
+        name: '',
+        music: '',
+        picture: '',
+        showAll: []
+      }
+  },
+  methods: {
+    showAllMusicList: function () {
+        axios.get('http://localhost:3000/musics',{
+            headers: {
+                token: localStorage.getItem('token')
+            }
+        }).then(response =>{
+            console.log('show music axios==',response.data)
+            this.showAll = response.data.dataMusic
+        }).catch(error =>{
+            console.log(error)
+        })
+    }
+  }
 })
