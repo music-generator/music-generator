@@ -1,9 +1,13 @@
 const Music = require('../models/music.model')
 const Comment = require('../models/comment.model')
+const jwt = require('jsonwebtoken')
+const pwdtoken = process.env.pwdtoken
 
 module.exports = {
     getAll: function (req, res) {
         Music.find()
+            .populate('comments')
+            .populate('userId')
             .exec()
             .then(response => {
                 res.status(200).json({
@@ -33,12 +37,14 @@ module.exports = {
     },
 
     add: function (req, res) {
+        let token = req.headers.token
+        let decoded = jwt.verify(token, pwdtoken)
 
         let newMusic = new Music({
             name: req.body.name,
             music: req.body.music,
             picture: req.body.picture,
-            userId: req.body.userId,
+            userId: decoded.id,
 
             // $push: { comments: { $each: [ req.body.comments ] } },
             // $push: { likes: { $each: [ req.body.likes ] } }
@@ -60,12 +66,8 @@ module.exports = {
     remove: function (req, res) {
         Music.findByIdAndRemove(req.params.id).then(response => {
             res.status(200).json({
-                name: req.body.name,
-                music: req.body.music,
-                picture: req.body.picture,
-                userId: req.body.userId,
-                comments: req.body.comments,
-                likes: req.body.likes,
+                message : 'delete success',
+                data: response
             })
         }).catch(err => {
             res.status(500).json({
@@ -77,12 +79,9 @@ module.exports = {
 
     update: function (req, res) {
         console.log(req.params);
-
+        let name = req.body.name
         Music.update({ _id: req.params.id }, {
-            name: req.body.name,
-            music: req.body.music,
-            picture: req.body.picture,
-            userId: req.body.userId,
+            $set: { name }
 
         }).then(response => {
             res.status(200).json({
@@ -99,20 +98,24 @@ module.exports = {
     },
 
     addComment: function (req, res) {
+
+
+        let token = req.headers.token
+        let decoded = jwt.verify(token, pwdtoken)
         let newComment = new Comment({
             word: req.body.word,
-            userId: req.body.userId,
-            
+            userId: decoded.id,
+
             // $push: { comments: { $each: [ req.body.comments ] } },
             // $push: { likes: { $each: [ req.body.likes ] } }
         })
-        
+
         newComment.save().then(response => {
-            
+
             Music.update({ _id: req.params.id }, {
 
-                $push: { comments: { $each: [response._id] } },
-    
+                $addToSet: { comments: { $each: [response._id] } },
+
             }).then(response => {
                 res.status(200).json({
                     message: 'update music comment success',
@@ -129,8 +132,8 @@ module.exports = {
                 message: 'success insert comment',
                 data: response
             })
-       
-    
+
+
         }).catch(err => {
             res.status(500).json({
                 message: 'insert error',
@@ -139,14 +142,14 @@ module.exports = {
         })
     },
 
-   
+
 
     getLike: function (req, res) {
-        console.log(req.body.userId);
-
+        let token = req.headers.token
+        let decoded = jwt.verify(token, pwdtoken)
         Music.update({ _id: req.params.id }, {
-            
-            $push: { likes: { $each: [req.body.userId] } },
+
+            $addToSet: { likes: { $each: [decoded.id] } },
             // $addToSet: { likes: { $each: [{ hitLike:req.body.hitLike,userId:req.body.userId }] } }
 
         }).then(response => {
