@@ -7,7 +7,10 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="style/index.css" type="text/css" rel="stylesheet">
+    <link href="style/profile.css" type="text/css" rel="stylesheet">
+    <link href="style/music_page.css" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Allerta' rel='stylesheet'>
     <!-- script -->
     
 </head>
@@ -15,11 +18,24 @@
     <!-- navbar header -->
     <div id="app">
         <header-navbar @login="login" @logout="logout" @register="register" :islogin="isLogin"></header-navbar>
-        <advertisement></advertisement>
-        <div class="container-user">
-            <user-profile></user-profile>
-            <edit-upload></edit-upload>
+        <div class="container-music">
+            <div class="container-audio">
+                <music-player></music-player>
+             </div>
+             <bgm-music></bgm-music>
         </div>
+        <div class="container-user">
+            <user-profile @editprofile="edit_profile" @uploadfile="upload_file"></user-profile>
+            <edit-upload :isedit="isEdit"></edit-upload>
+        </div>
+
+        <div class="container-music" v-for="music in 5">
+            <div class="container-audio">
+                <music-player></music-player>
+             </div>
+             <bgm-music></bgm-music>
+        </div>
+        
     </div>
 
     <!-- script -->
@@ -33,6 +49,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="vue/header-navbar.js"></script>
+    <script src="vue/music-player.js"></script>
+    <script src="vue/bgm-music.js"></script>
     <script src="vue/advertisement.js"></script>
     <script src="vue/user-profile.js"></script>
     <script src="vue/edit-profile-upload-song.js"></script>
@@ -45,6 +63,7 @@
                 new_email: '',
                 new_password: '',
                 isLogin: false,
+                isEdit: true,
             },
             methods: {
                 login: function(){
@@ -63,6 +82,14 @@
                     let newName = payload.name
                     axios.post('http://localhost:3000/users/signup',{email: newEmail, password: newPassword, name: newName},{})
                     window.location.href="index.html"
+                },
+                upload_file: function(){
+                    console.log('uploadddd')
+                    this.isEdit = false;
+                },
+                edit_profile: function(){
+                    console.log('editttt')
+                    this.isEdit = true;
                 }
             }
         }) 

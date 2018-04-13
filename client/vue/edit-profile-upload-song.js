@@ -2,37 +2,75 @@ Vue.component('edit-upload', {
     name: 'edit-upload',
     template: `
     <div>
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalCenterTitleRegister">Edit Profile</h5>
+        <div v-if="isedit">
+            <div class="header-edit">
+                <h5 class="modal-title" id="exampleModalCenterTitleRegister">Edit Profile</h5>
+            </div>
+            <div class="header-edit">
+                <form>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Name</label>
+                        <input type="text" name="edit_name" v-model="edit_name" class="form-control" id="editName" aria-describedby="nameHelp" placeholder="Enter name">
+                        <small id="editNameHelp" class="form-text text-muted"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input type="email" name="edit_email" v-model="edit_email" class="form-control" id="editEmail" aria-describedby="emailHelp" placeholder="Enter email">
+                        <small id="editEmailHelp" class="form-text text-muted"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" name="edit_password" v-model="edit_password" class="form-control" id="editPassword" placeholder="Password">
+                        <small id="editPasswordHelp" class="form-text text-muted"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Confirm Password</label>
+                        <input type="password" name="confirm_edit_password" v-model="confirm_edit_password" class="form-control" id="confirmEditPassword" placeholder="Password">
+                        <small id="confirmEditPasswordHelp" class="form-text text-muted"></small>
+                    </div>
+                </form>
+            </div>
+            <div class="header-edit">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" v-show="isName && isEmail && isPassword && isConfirm" @click="register()">Submit</button>
+            </div>
         </div>
-        <div class="modal-header">
-            <form>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Name</label>
-                    <input type="text" name="edit_name" v-model="edit_name" class="form-control" id="editName" aria-describedby="nameHelp" placeholder="Enter name">
-                    <small id="editNameHelp" class="form-text text-muted"></small>
+       <div v-else="">
+            <div class="header-upload">
+                    <h5 class="modal-title" id="exampleModalCenterTitleRegister">Upload Song</h5>
                 </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" name="edit_email" v-model="edit_email" class="form-control" id="editEmail" aria-describedby="emailHelp" placeholder="Enter email">
-                    <small id="editEmailHelp" class="form-text text-muted"></small>
+                <div class="header-upload">
+                    <form>
+                        <label for="exampleInputTitle1">Title</label>
+                        <div class="form-group">
+                            <input type="title" name="title" class="form-control" id="title" placeholder="Enter titile song">
+                            <small id="editEmailHelp" class="form-text text-muted"></small>
+                        </div>
+                        <label for="exampleInputTitle1">File Picture</label>
+
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Upload file picture" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button">Upload</button>
+                            </div>
+                        </div>
+                        <label for="exampleInputTitle1">File Song</label>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Upload file music" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button">Upload</button>
+                            </div>
+                        </div>
+                
+                        
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="password" name="edit_password" v-model="edit_password" class="form-control" id="editPassword" placeholder="Password">
-                    <small id="editPasswordHelp" class="form-text text-muted"></small>
+                <div class="header-upload">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Submit</button>
                 </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Confirm Password</label>
-                    <input type="password" name="confirm_edit_password" v-model="confirm_edit_password" class="form-control" id="confirmEditPassword" placeholder="Password">
-                    <small id="confirmEditPasswordHelp" class="form-text text-muted"></small>
-                </div>
-            </form>
-        </div>
-        <div class="modal-header">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" v-show="isName && isEmail && isPassword && isConfirm" @click="register()">Submit</button>
-        </div>
+
+       </div>        
     </div>
     
     
@@ -46,9 +84,10 @@ Vue.component('edit-upload', {
             isEmail: false,
             isPassword: false,
             isConfirm: false,
-            isName: false
+            isName: false,
         }
     },
+    props: ['isedit'],
     watch: {
         edit_name: function(){
             let name = this.edit_name;

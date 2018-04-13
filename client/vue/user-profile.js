@@ -1,7 +1,7 @@
 Vue.component('user-profile',{
     name: 'user-profile',
     template: `
-    <div class="card" style="width: 18rem;">
+    <div class="card user-profile" style="width: 18rem;">
         <img class="card-img-top" src="https://cdn1-a.production.images.static6.com/2sokfzk1mvvnS3-1qqOBLboEN68=/640x360/smart/filters:quality(75):strip_icc():format(jpeg)/liputan6-media-production/medias/1128176/original/064850500_1454304784-download.jpg">
         <div class="card-body">
             <h5 class="card-title">Card title</h5>
@@ -13,8 +13,17 @@ Vue.component('user-profile',{
             <li class="list-group-item"><span class="fa fa-users" aria-hidden="true"></span> followers</li>
         </ul>
         <div class="card-body">
-            <button type="button" class="btn btn-primary">FOLLOW</button>
+            <button type="button" @click="edit" class="btn btn-primary">EDIT</button>
+            <button type="button" @click="upload" class="btn btn-primary">UPLOAD</button>
         </div>
     </div>
-    `
+    `,
+    methods: {
+        upload: function(){
+            this.$emit('uploadfile', true)
+        },
+        edit: function(){
+            this.$emit('editprofile', true)
+        }
+    }
 })
