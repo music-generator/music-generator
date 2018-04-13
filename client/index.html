@@ -8,17 +8,55 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="style/index.css" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Allerta' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Fira+Sans' rel='stylesheet'>
+    <link rel="stylesheet" href="./style/music-player-1.css">
+
     <!-- script -->
-    
+
 </head>
 <body>
     <!-- navbar header -->
     <div id="app">
         <header-navbar @login="login" @logout="logout" @register="register" :islogin="isLogin"></header-navbar>
         <advertisement></advertisement>
+
+        <music-player-1></music-player-1>
+        <div class="container">
+            <form>
+                <div class="form-group">
+                  <label for="title">Name</label>
+                  <input type="text" class="form-control" name="name" v-model="name">
+                </div>
+                <div class="form-group">
+                    <label for="title">Music File</label>
+                    <input type="file" class="form-control" name="music" accept="audio/*" @change="handleUploadMusic">
+                </div>
+                <div class="form-group">
+                    <label for="title">Picture/Poster</label>
+                    <input type="file" class="form-control" name="picture" accept="image/*" @change="handleUploadPicture">
+                </div>
+                <button type="button" @click="uploadFile">Submit</button>
+              </form>
+        </div>
+        <div v-for="data in showAll">
+            <p>{{data.title}}</p>
+            <img :src="data.picture" alt="picture">
+            <audio controls>
+                <source :src="data.music" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <a :href=`http://www.facebook.com/sharer.php?u=${data.music}` target="_blank">
+                <img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook" />
+            </a>
+            <a href="https://twitter.com/share?url=https://storage.googleapis.com/music-generator/1523537506592.mp3&amp;text=Simple%20sharemusicgcs&amp;hashtags=hacktiv8" target="_blank">
+                <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
+            </a>   
+        </div>
     </div>
 
     <!-- script -->
+    
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -29,37 +67,123 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="vue/header-navbar.js"></script>
+    <script src="vue/music-player-1.js"></script>
     <script src="vue/advertisement.js"></script>
+    <script src="script/music-player-1.js"></script>
     <script>
+        let token = localStorage.getItem('token')
 
-        new Vue ({
+        let vue = new Vue ({
             el: '#app',
             data: {
                 rama: 'ini ada datanya',
                 new_email: '',
                 new_password: '',
                 isLogin: false,
+                name: '',
+                music: '',
+                picture: '',
+                showAll: []
             },
             methods: {
-                login: function(){
-                    this.isLogin = true;
-                    // localStorage.setItem('token', ini tokennya)
-                    window.location.href="index.html"
+                login: function(payload){
+                    console.log(payload)
+                    let email = payload.email
+                    let password = payload.password
+                    //nanti urlLogin di ganti
+                    let urlLogin = 'http://localhost:3000/users/signin'
+
+                    axios.post(urlLogin, {email, password})
+                         .then(function(response){
+                           //kalo login gagal
+                           if(response.data.message != 'User Berhasil Sign In'){
+                             alert(response.data.message)
+                           }else{
+                             alert(response.data.message)
+                             localStorage.setItem('token', response.data.token)
+
+                             window.location.href="index.html"
+                           }
+                         })
+                         .catch(function(err){
+                           //sementara cuy nanti di ganti
+                           alert('Email / Password Salah')
+                         })
                 },
                 logout: function(){
-                    this.isLogin = false;
-                    // localStorage.removeItem('token')
+                    localStorage.removeItem('token')
                     window.location.href="index.html"
                 },
                 register: function(payload){
-                    let newEmail = payload.email;
-                    let newPassword = payload.password;
+                    let newEmail = payload.email
+                    let newPassword = payload.password
                     let newName = payload.name
-                    // axios.post('http://localhost:3000/users/signup',{email: newEmail, password: newPassword, name: newName},{})
-                    window.location.href="index.html"
+                    let registerUrl = 'http://localhost:3000/users/signup'
+
+                    axios.post(registerUrl,{
+                      email: newEmail,
+                      password: newPassword,
+                      name: newName
+                    }).then(function(response){
+                      // console.log(response.data.message)
+                      alert(response.data.message)
+                      window.location.href="index.html"
+                    }).catch(function(err){
+                      alert(err)
+                    })
+                },
+                uploadFile: function () {
+                    let formData = new FormData()
+                    formData.append('name', this.name)
+                    formData.append('music', this.music)
+                    formData.append('picture', this.picture)
+                    console.log('click upload==', formData)
+                    axios.post('http://localhost:3000/musics/upload', formData, {
+                        headers: {
+                            'Content-type': 'multipart/form-data',
+                            token: localStorage.getItem('token')
+                        }
+                    }).then(response => {
+                        console.log('response upload', response.data)
+                        alert('upload berhasil!!')
+                    }).catch(error =>{
+                        alert('something wrong!!', error.message)
+                    })
+                },
+                handleUploadMusic: function (event) {
+                    console.log('event===', event.target.files)
+                    this.music = event.target.files[0]
+                    this.picture = event.target.files[0]
+                },
+                handleUploadPicture: function (event) {
+                    console.log('event===', event.target.files)
+                    this.picture = event.target.files[0]
+                },
+                showAllMusicList: function () {
+                    axios.get('http://localhost:3000/musics',{
+                        headers: {
+                            token: localStorage.getItem('token')
+                        }
+                    }).then(response =>{
+                        console.log('show music axios==',response.data)
+                        this.showAll = response.data.dataMusic
+                    }).catch(error =>{
+                        console.log(error)
+                    })
                 }
+            },
+            created: function () {
+                this.showAllMusicList()
             }
-        }) 
+        })
+
+        //cek token
+        if(token){
+          vue.isLogin = true
+        }else {
+          vue.isLogin = false
+        }
+
     </script>
 </body>
 </html>
