@@ -6,7 +6,7 @@ let musicSChema = new mongoose.Schema({
         type: String,
         required: [true, 'name cannot be empty']
     },
-    path: {
+    music: {
         type: String,
     },
     picture: {
@@ -14,15 +14,15 @@ let musicSChema = new mongoose.Schema({
     },
     userId: {
         type: Schema.Types.ObjectId,
-        ref: "Users"
+        ref: "User"
     },
     comments: [{
         type: Schema.Types.ObjectId,
-        ref: "Comments"
+        ref: "Comment"
     }],
     likes: [{
         type: Schema.Types.ObjectId,
-        ref: "Users"
+        ref: "User"
     }]
     // comments: [{
     //     word: {
@@ -47,6 +47,6 @@ let musicSChema = new mongoose.Schema({
         timestamps: true
     })
 
-let Music = mongoose.model('Musics', musicSChema)
+let Music = mongoose.model('Music', musicSChema)
 
 module.exports = Music
