@@ -148,10 +148,22 @@ Vue.component('edit-upload', {
                 }
             }).then(response => {
                 console.log('response upload', response.data)
-                alert('upload berhasil!!')
+                // alert('upload berhasil!!')
+                swal({
+                    position: 'center',
+                    type: 'success',
+                    title: 'Upload success',
+                    showConfirmButton: false,
+                    timer: 2000
+                  })
                 location.reload()
             }).catch(error =>{
-                alert('something wrong!!', error.message)
+                // alert('something wrong!!', error.message)
+                swal({
+                    type: 'error',
+                    title: 'Oops...',
+                    text: 'something wrong!',
+                    })
             })
         },
         handleUploadMusic: function (event) {

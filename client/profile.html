@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href='https://fonts.googleapis.com/css?family=Allerta' rel='stylesheet'>
     <link rel="stylesheet" href="./style/music-player-1.css">
+    <link rel="stylesheet" href="sweetalert2/dist/sweetalert2.min.css">
     <!-- script -->
     
 </head>
@@ -42,6 +43,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/sweetalert2@7.18.0/dist/sweetalert2.all.js"></script>
+
+    <!-- Include a polyfill for ES6 Promises (optional) for IE11, UC Browser and Android browser support -->
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@7.1.0/dist/promise.min.js"></script>
     <script src="vue/header-navbar.js"></script>
     <script src="vue/music-player-1.js"></script>
     <script src="vue/bgm-music.js"></script>
@@ -73,9 +78,19 @@
                          .then(function(response){
                            //kalo login gagal
                            if(response.data.message != 'User Berhasil Sign In'){
-                             alert(response.data.message)
+                            //  alert(response.data.message)
+                            swal({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'something wrong!',
+                            })
                            }else{
-                             alert(response.data.message)
+                            //  alert(response.data.message)
+                            swal(
+                                'Good job!',
+                                'You log in successfully!',
+                                'success'
+                                )
                              localStorage.setItem('token', response.data.token)
                              console.log('dia kesini')
 
@@ -84,12 +99,34 @@
                          })
                          .catch(function(err){
                            //sementara cuy nanti di ganti
-                           alert('Email / Password Salah')
+                        //    alert('Email / Password Salah')
+                        swal({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Email/password is wrong!',
+                        })
                          })
                 },
                 logout: function(){
-                    localStorage.removeItem('token')
-                    window.location.href="index.html"
+                    swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Log out!'
+                    }).then((result) => {
+                    if (result.value) {
+                        swal(
+                        'Log out!',
+                        'You have been log out.',
+                        'success'
+                        )
+                        localStorage.removeItem('token')
+                        window.location.href="index.html"
+                    }
+                    })
                 },
                 register: function(payload){
                     let newEmail = payload.email
@@ -103,10 +140,20 @@
                       name: newName
                     }).then(function(response){
                       // console.log(response.data.message)
-                      alert(response.data.message)
+                    //   alert(response.data.message)
+                        swal(
+                        'Good job!',
+                        'You sign up successfully!',
+                        'success'
+                        )
                       window.location.href="index.html"
                     }).catch(function(err){
-                      alert(err)
+                    //   alert(err)
+                    swal({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'something wrong!',
+                        })
                     })
                 },
                 upload_file: function(){
