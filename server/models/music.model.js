@@ -6,7 +6,7 @@ let musicSChema = new mongoose.Schema({
         type: String,
         required: [true, 'name cannot be empty']
     },
-    path: {
+    music: {
         type: String,
     },
     picture: {
