@@ -24,7 +24,11 @@ module.exports = {
 
     getOne: function (req, res) {
         console.log('masuk kesini')
-        Music.findById(req.params.id).exec().then(response => {
+        Music.findById(req.params.id)
+        .populate('comments')
+        .populate('likes')
+        .exec()
+        .then(response => {
             res.status(200).json({
                 message: 'success get data by id',
                 data: response

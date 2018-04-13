@@ -60,10 +60,10 @@ Vue.component('edit-upload', {
                     <button type="button" @click="uploadFile" class="btn btn-primary">Submit</button>
                 </div>
 
-       </div>        
+       </div>
     </div>
-    
-    
+
+
     `,
     data: function() {
         return {

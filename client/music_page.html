@@ -23,20 +23,20 @@
 
         <div class= "container-song-info">
             <song-info  @facebookshare="facebook_share" @twittershare="twitter_share" @likesong="likesong" :idmusic="id_url"></song-info>
-        </div>    
+        </div>
         <div class= "container-song-comment">
             <submit-comment @submit-comment="submit_comment"></submit-comment>
         </div>
         <div class = "container-user-info">
             <user-info></user-info>
-            <comment-list></comment-list>
+            <comment-list :comments="data_comments"></comment-list>
         </div>
-        
 
-        
-        
+
+
+
     <!-- divnya punya app yang bawah -->
-    </div> 
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -164,8 +164,18 @@
                     })
                 },
                 submit_comment: function(payload){
-                    let userComment = payload.comment
-                    console.log(userComment,'ini comment tinggal disubmit')
+                  let userComment = payload.comment
+                  let getId = getParameterByName('music_id');
+                  axios.post(`http://server-mg.creart.xyz/musics/addComment/${getId}`, {word:userComment}, {headers: {token} })
+                       .then(response => {
+                         console.log(response);
+                         window.location.href=`music_page.html?music_id=${getId}`
+
+                       })
+                       .catch(err =>{
+                         console.log(err);
+                         alert(err)
+                       })
                 },
                 facebook_share: function(){
                     console.log('share song ke facebook')
@@ -174,10 +184,20 @@
                     console.log('share song ke twitter')
                 },
                 likesong: function(){
+                  let getId = getParameterByName('music_id');
+                  console.log('Token',token);
+                  axios.put(`http://server-mg.creart.xyz/musics/getLike/${getId}`, {}, {headers: {token} })
+                       .then(response => {
+                         console.log(response);
+                       })
+                       .catch(err =>{
+                         console.log(err);
+                         alert(err)
+                       })
                     console.log('like songnya')
-                }
+                  }
             }
-        }) 
+        })
 
         //cek token
         if(token){
@@ -200,9 +220,11 @@
         axios.get(`http://server-mg.creart.xyz/musics/${getId}`,{headers: {token:token}})
                          .then(response=>{
                              console.log(response.data,'--------')
+                             let comments = response.data.data.comments
                              let pict = response.data.data.picture
                              let music = response.data.data.music
                              let title = response.data.data.name
+                             vue.data_comments = comments.reverse()
                              vue.data_music.title = title;
                              vue.data_music.picture = pict;
                              vue.data_music.music = music
@@ -213,7 +235,7 @@
                              alert('login dulu')
                              window.location.href="index.html"
         })
-        
+
     </script>
 </body>
 </html>
