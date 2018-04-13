@@ -8,13 +8,13 @@ let commentSchema = new mongoose.Schema({
     },
     userId: {
         type: Schema.Types.ObjectId,
-        ref: "Users"
+        ref: "User"
     },
     
 }, {
         timestamps: true
     })
 
-let Comment = mongoose.model('Comments', commentSchema)
+let Comment = mongoose.model('Comment', commentSchema)
 
 module.exports = Comment
