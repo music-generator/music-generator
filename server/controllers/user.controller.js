@@ -45,7 +45,6 @@ module.exports = {
   signIn: function(req, res){
     let email = req.body.email
     let password = req.body.password
-
     Users.findOne({email})
          .then(user => {
            //cek email ada di db atau ga?
@@ -54,7 +53,6 @@ module.exports = {
                message: 'email / password salah'
              })
            }else{
-
              //cek password sama ga
              bcrypt.compare(password, user.password, function(err, result){
                if(err){

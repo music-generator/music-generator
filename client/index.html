@@ -87,7 +87,6 @@
             },
             methods: {
                 login: function(payload){
-                    console.log(payload)
                     let email = payload.email
                     let password = payload.password
                     //nanti urlLogin di ganti
@@ -101,6 +100,7 @@
                            }else{
                              alert(response.data.message)
                              localStorage.setItem('token', response.data.token)
+                             console.log('dia kesini')
 
                              window.location.href="index.html"
                            }
@@ -166,7 +166,7 @@
                         }
                     }).then(response =>{
                         console.log('show music axios==',response.data)
-                        this.showAll = response.data.dataMusic
+                        this.showAll = response.data.data
                     }).catch(error =>{
                         console.log(error)
                     })

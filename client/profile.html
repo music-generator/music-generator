@@ -56,7 +56,8 @@
     <script src="vue/edit-profile-upload-song.js"></script>
     <script>
 
-        new Vue ({
+        let token = localStorage.getItem('token')
+        let vue = new Vue ({
             el: '#app',
             data: {
                 rama: 'ini ada datanya',
@@ -66,22 +67,51 @@
                 isEdit: true,
             },
             methods: {
-                login: function(){
-                    this.isLogin = true;
-                    // localStorage.setItem('token', ini tokennya)
-                    window.location.href="index.html"
+                login: function(payload){
+                    let email = payload.email
+                    let password = payload.password
+                    //nanti urlLogin di ganti
+                    let urlLogin = 'http://localhost:3000/users/signin'
+
+                    axios.post(urlLogin, {email, password})
+                         .then(function(response){
+                           //kalo login gagal
+                           if(response.data.message != 'User Berhasil Sign In'){
+                             alert(response.data.message)
+                           }else{
+                             alert(response.data.message)
+                             localStorage.setItem('token', response.data.token)
+                             console.log('dia kesini')
+
+                             window.location.href="index.html"
+                           }
+                         })
+                         .catch(function(err){
+                           //sementara cuy nanti di ganti
+                           alert('Email / Password Salah')
+                         })
                 },
                 logout: function(){
-                    this.isLogin = false;
-                    // localStorage.removeItem('token')
+                    localStorage.removeItem('token')
                     window.location.href="index.html"
                 },
                 register: function(payload){
-                    let newEmail = payload.email;
-                    let newPassword = payload.password;
+                    let newEmail = payload.email
+                    let newPassword = payload.password
                     let newName = payload.name
-                    axios.post('http://localhost:3000/users/signup',{email: newEmail, password: newPassword, name: newName},{})
-                    window.location.href="index.html"
+                    let registerUrl = 'http://localhost:3000/users/signup'
+
+                    axios.post(registerUrl,{
+                      email: newEmail,
+                      password: newPassword,
+                      name: newName
+                    }).then(function(response){
+                      // console.log(response.data.message)
+                      alert(response.data.message)
+                      window.location.href="index.html"
+                    }).catch(function(err){
+                      alert(err)
+                    })
                 },
                 upload_file: function(){
                     console.log('uploadddd')
@@ -93,6 +123,14 @@
                 }
             }
         }) 
+        //cek token
+        console.log('halaman profile', token)
+        if(token){
+          vue.isLogin = true
+        }else {
+          vue.isLogin = false
+        }
+
     </script>
 </body>
 </html>
