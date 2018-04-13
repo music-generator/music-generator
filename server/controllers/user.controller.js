@@ -86,11 +86,30 @@ module.exports = {
     // console.log('Email Login',email);
     // console.log('Password Login', password);
   },
-  getOne: function(req,res){
-    console.log(req.decoded,'ini data token')
-    console.log('tesss')
-    res.status(200).json({
-      message: 'masuk'
+
+  findUser: function(req, res){
+    let token = req.headers.token
+
+    jwt.verify(token, pwdtoken, function(err, decoded) {
+      if(err){
+        res.status(500).json({
+          message: 'Something went wrong / token is invalid'
+        })
+      }else{
+        Users.findOne({_id:decoded.id, email:decoded.email})
+             .then(users =>{
+               if(!users){
+                 res.status(401).json({
+                   message: "Anda harus Login"
+                 })
+               }else {
+                 res.status(200).json({
+                   message: "User Ketemu",
+                   data: users
+                 })
+               }
+             })
+      }
     })
   }
 }

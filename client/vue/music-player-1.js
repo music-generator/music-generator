@@ -92,17 +92,17 @@ Vue.component('music-player-1', {
   },
   props: ['datamusic'],
   methods: {
-    // showAllMusicList: function () {
-    //     axios.get('http://localhost:3000/musics',{
-    //         headers: {
-    //             token: localStorage.getItem('token')
-    //         }
-    //     }).then(response =>{
-    //         console.log('show music axios==',response.data)
-    //         this.showAll = response.data.dataMusic
-    //     }).catch(error =>{
-    //         console.log(error)
-    //     })
-    // }
+    showAllMusicList: function () {
+        axios.get('http://localhost:3000/musics',{
+            headers: {
+                token: localStorage.getItem('token')
+            }
+        }).then(response =>{
+            console.log('show music axios==',response.data)
+            this.showAll = response.data.dataMusic
+        }).catch(error =>{
+            console.log(error)
+        })
+    }
   }
 })
