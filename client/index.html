@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Music GCS</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="style/index.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Allerta' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Fira+Sans' rel='stylesheet'>
+    <link rel="stylesheet" href="./style/music-player-1.css">
+    <link rel="stylesheet" href="sweetalert2/dist/sweetalert2.min.css">
+    <!-- script -->
+
+</head>
+<body>
+    <!-- navbar header -->
+    <div id="app">
+        <header-navbar @login="login" @logout="logout" @register="register" :islogin="isLogin"></header-navbar>
+        <advertisement></advertisement>
+<!--
+
+        <div class="container">
+            <form>
+                <div class="form-group">
+                  <label for="title">Name</label>
+                  <input type="text" class="form-control" name="name" v-model="name">
+                </div>
+                <div class="form-group">
+                    <label for="title">Music File</label>
+                    <input type="file" class="form-control" name="music" accept="audio/*" @change="handleUploadMusic">
+                </div>
+                <div class="form-group">
+                    <label for="title">Picture/Poster</label>
+                    <input type="file" class="form-control" name="picture" accept="image/*" @change="handleUploadPicture">
+                </div>
+                <button type="button" @click="uploadFile">Submit</button>
+              </form>
+        </div> -->
+        <div class="container border border-dark" v-for="data in showAll" style="padding: 10px;">
+            <div class="media">
+                <img class="mr-3" style="height: 150px; width: 150px;" :src="data.picture" @click="getSongId(data)" alt="Generic placeholder image">
+                <div class="media-body">
+                    <h5 class="mt-0">{{data.name}}</h5>
+                    <audio controls>
+                        <source :src="data.music" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            </div>
+            <!-- <p>{{data.title}}</p>
+            <img :src="data.picture" alt="picture" @click="getSongId(data)">
+            <audio controls>
+                <source :src="data.music" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio> -->
+            <!-- <a :href=`http://www.facebook.com/sharer.php?u=${data.music}` target="_blank">
+                <img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook" />
+            </a>
+            <a href="https://twitter.com/share?url=https://storage.googleapis.com/music-generator/1523537506592.mp3&amp;text=Simple%20sharemusicgcs&amp;hashtags=hacktiv8" target="_blank">
+                <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
+            </a>    -->
+        </div>
+    </div>
+
+    <!-- script -->
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/sweetalert2@7.18.0/dist/sweetalert2.all.js"></script>
+
+<!-- Include a polyfill for ES6 Promises (optional) for IE11, UC Browser and Android browser support -->
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@7.1.0/dist/promise.min.js"></script>
+    <script src="vue/header-navbar.js"></script>
+    <script src="vue/music-player-1.js"></script>
+    <script src="vue/advertisement.js"></script>
+    <script>
+        let token = localStorage.getItem('token')
+
+        let vue = new Vue ({
+            el: '#app',
+            data: {
+                rama: 'ini ada datanya',
+                new_email: '',
+                new_password: '',
+                isLogin: false,
+                name: '',
+                music: '',
+                picture: '',
+                showAll: []
+            },
+            methods: {
+                login: function(payload){
+                    let email = payload.email
+                    let password = payload.password
+                    //nanti urlLogin di ganti
+                    let urlLogin = 'http://server-mg.creart.xyz/users/signin'
+
+                    axios.post(urlLogin, {email, password})
+                         .then(function(response){
+                           //kalo login gagal
+                           if(response.data.message != 'User Berhasil Sign In'){
+                            //  alert(response.data.message)
+                            swal({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'something wrong!',
+                            })
+
+                           }else{
+                            //  alert(response.data.message)
+                             localStorage.setItem('token', response.data.token)
+                            swal(
+                                'Good job!',
+                                'You log in successfully!',
+                                'success'
+                                )
+                             console.log('dia kesini')
+
+                             window.location.href="index.html"
+                           }
+                         })
+                         .catch(function(err){
+                           //sementara cuy nanti di ganti
+                        //    alert('Email / Password Salah')
+                           swal({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'Email/password wrong!',
+                            })
+                         })
+                },
+                logout: function(){
+                    swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Log out!'
+                    }).then((result) => {
+                    if (result.value) {
+                        swal(
+                        'Log out!',
+                        'You have been log out.',
+                        'success'
+                        )
+                        localStorage.removeItem('token')
+                        window.location.href="index.html"
+                    }
+                    })
+                },
+                register: function(payload){
+                    let newEmail = payload.email
+                    let newPassword = payload.password
+                    let newName = payload.name
+                    let registerUrl = 'http://server-mg.creart.xyz/users/signup'
+
+                    axios.post(registerUrl,{
+                      email: newEmail,
+                      password: newPassword,
+                      name: newName
+                    }).then(function(response){
+                      // console.log(response.data.message)
+                    //   alert(response.data.message)
+                    swal(
+                        'Good job!',
+                        'You sign up successfully!',
+                        'success'
+                        )
+                      window.location.href="index.html"
+                    }).catch(function(err){
+                    //   alert(err)
+                    swal({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'something wrong!',
+                        })
+                    })
+                },
+                uploadFile: function () {
+                    let formData = new FormData()
+                    formData.append('name', this.name)
+                    formData.append('music', this.music)
+                    formData.append('picture', this.picture)
+                    console.log('click upload==', formData)
+                    axios.post('http://server-mg.creart.xyz/musics/upload', formData, {
+                        headers: {
+                            'Content-type': 'multipart/form-data',
+                            token: localStorage.getItem('token')
+                        }
+                    }).then(response => {
+                        console.log('response upload', response.data)
+                        // alert('upload berhasil!!')
+                        swal(
+                        'Good job!',
+                        'Upload success!',
+                        'success'
+                        )
+                    }).catch(error =>{
+                        // alert('something wrong!!', error.message)
+                        swal({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'something wrong!',
+                        })
+                    })
+                },
+                handleUploadMusic: function (event) {
+                    console.log('event===', event.target.files)
+                    this.music = event.target.files[0]
+                },
+                handleUploadPicture: function (event) {
+                    console.log('event===', event.target.files)
+                    this.picture = event.target.files[0]
+                },
+                showAllMusicList: function () {
+                    axios.get('http://server-mg.creart.xyz/musics',{
+                        headers: {
+                            token: localStorage.getItem('token')
+                        }
+                    }).then(response =>{
+                        console.log('show music axios==',response.data)
+                        this.showAll = response.data.data.slice().reverse()
+                    }).catch(error =>{
+                        console.log(error)
+                    })
+                },
+                getSongId: function(data){
+                    console.log(data._id,'---')
+                    let getId = data._id;
+                    window.location.href=`music_page.html?music_id=${getId}`
+
+
+                }
+            },
+            created: function () {
+                this.showAllMusicList()
+            }
+        })
+
+        //cek token
+        if(token){
+          vue.isLogin = true
+        }else {
+          vue.isLogin = false
+        }
+
+    </script>
+</body>
+</html>

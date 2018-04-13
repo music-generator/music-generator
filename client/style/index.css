@@ -1,0 +1,12 @@
+.container-navbar{
+    display: flex;
+}
+.container-logo{
+    align-self: flex-start;
+}
+.container-search{
+    align-self: center;
+}
+.container-users{
+    align-self: flex-end;
+}

@@ -1,0 +1,18 @@
+.container-user {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.header-edit{
+    width: 1000px;
+    margin: 30px;
+}
+
+.header-upload{
+    width: 1000px;
+    margin: 30px;
+}
+
+.user-profile{
+    margin: 30px;
+}
