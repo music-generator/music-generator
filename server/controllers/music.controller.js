@@ -36,7 +36,7 @@ module.exports = {
 
         let newMusic = new Music({
             name: req.body.name,
-            path: req.body.path,
+            music: req.body.music,
             picture: req.body.picture,
             userId: req.body.userId,
 
@@ -57,12 +57,11 @@ module.exports = {
         })
     },
 
-
     remove: function (req, res) {
         Music.findByIdAndRemove(req.params.id).then(response => {
             res.status(200).json({
                 name: req.body.name,
-                path: req.body.path,
+                music: req.body.music,
                 picture: req.body.picture,
                 userId: req.body.userId,
                 comments: req.body.comments,
@@ -81,7 +80,7 @@ module.exports = {
 
         Music.update({ _id: req.params.id }, {
             name: req.body.name,
-            path: req.body.path,
+            music: req.body.music,
             picture: req.body.picture,
             userId: req.body.userId,
 
@@ -163,7 +162,46 @@ module.exports = {
         })
 
     },
-
+    uploadFile: function (req, res) {
+        console.log('masuk contrlr upload')
+        console.log(req.body,'====input upload')
+        let input = {
+          name: req.body.name,
+          music: req.files.music[0].cloudStoragePublicUrl,
+          picture: req.files.picture[0].cloudStoragePublicUrl,
+          userId: req.headers.userId
+        }
+        Music.findOne({
+          name: req.body.name
+        })
+        .exec()
+        .then(dataMusic =>{
+          if(dataMusic) {
+            res.status(400).json({
+              message: 'title already registered!',
+              dataMusic
+            })
+          }else{
+            Music.create(input, (error, newMusic) =>{
+              if(error){
+                res.status(400).json({
+                  message: 'failed add new music file',
+                  error
+                })
+              }else{
+                res.status(201).json({
+                  message: 'success add new music file',
+                  newMusic
+                })
+              }
+            })
+          }
+        }).catch(error => {
+          res.status(400).json({
+            error
+          })
+        })
+      }
 
 
 
