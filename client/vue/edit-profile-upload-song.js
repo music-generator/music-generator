@@ -41,7 +41,7 @@ Vue.component('edit-upload', {
                 </div>
                 <div class="header-upload">
                     <form>
-                        <label for="exampleInputTitle1">Title</label>
+                        <label for="exampleInputTitle1">Name</label>
                         <div class="form-group">
                             <input type="text" class="form-control" v-model="name" placeholder="Enter title song">
                         </div>

@@ -20,6 +20,7 @@
     <div id="app">
         <header-navbar @login="login" @logout="logout" @register="register" :islogin="isLogin"></header-navbar>
         <advertisement></advertisement>
+<!-- 
 
         <div class="container">
             <form>
@@ -37,10 +38,10 @@
                 </div>
                 <button type="button" @click="uploadFile">Submit</button>
               </form>
-        </div>
+        </div> -->
         <div v-for="data in showAll">
             <p>{{data.title}}</p>
-            <img :src="data.picture" alt="picture">
+            <img :src="data.picture" alt="picture" @click="getSongId(data)">
             <audio controls>
                 <source :src="data.music" type="audio/mpeg">
                 Your browser does not support the audio element.
@@ -85,7 +86,6 @@
             },
             methods: {
                 login: function(payload){
-                    console.log(payload)
                     let email = payload.email
                     let password = payload.password
                     //nanti urlLogin di ganti
@@ -99,6 +99,7 @@
                            }else{
                              alert(response.data.message)
                              localStorage.setItem('token', response.data.token)
+                             console.log('dia kesini')
 
                              window.location.href="index.html"
                            }
@@ -167,6 +168,13 @@
                     }).catch(error =>{
                         console.log(error)
                     })
+                },
+                getSongId: function(data){
+                    console.log(data._id,'---')
+                    let getId = data._id;
+                    window.location.href=`music_page.html?music_id=${getId}`
+
+                    
                 }
             },
             created: function () {
