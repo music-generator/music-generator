@@ -13,7 +13,7 @@ let dbpwd = process.env.dbpwd
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-
+var musicsRouter = require('./routes/musics')
 const app = express();
 
 // view engine setup
@@ -41,6 +41,7 @@ db.once('open', function(){
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/musics', musicsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
